@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -112,5 +113,10 @@ public class GameManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         finalScoreText.text = "Final Score: " + score;
         // TODO: Check for high score and update if necessary
+    }
+    
+    public void EnterMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
