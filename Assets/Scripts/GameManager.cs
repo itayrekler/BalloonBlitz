@@ -15,16 +15,21 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel;
     public TMPro.TextMeshProUGUI finalScoreText;
 
+    public GameObject nameInputPanel;
+    public TMPro.TMP_InputField nameInputField;
+    public Button submitNameButton;
     
     private float screenLeft;
     private float screenRight;
     private float screenBottom;
     private Camera mainCamera;
     private int score;
+
     private float timeLeft = 60f;
     private bool isGameActive;
-    
+    private string playerName;
 
+    
 
     void Start()
     {
@@ -39,10 +44,36 @@ public class GameManager : MonoBehaviour
         screenRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 0, mainCamera.nearClipPlane)).x;
         screenBottom = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.nearClipPlane)).y;
         
-        Debug.Log("Screen bounds: Left " + screenLeft + ", Right " + screenRight + ", Bottom " + screenBottom);
+        StartCoroutine(GameSetupCoroutine());
+
+    }
+    IEnumerator GameSetupCoroutine()
+    {
+        yield return StartCoroutine(WaitForPlayerName());
         StartGame();
     }
 
+    IEnumerator WaitForPlayerName()
+    {
+        nameInputPanel.SetActive(true);
+        submitNameButton.onClick.AddListener(OnNameSubmitted);
+
+        // Wait until the name is submitted
+        yield return new WaitUntil(() => !string.IsNullOrEmpty(playerName));
+
+        nameInputPanel.SetActive(false);
+    }
+    
+    void OnNameSubmitted()
+    {
+        playerName = nameInputField.text;
+        if (string.IsNullOrEmpty(playerName))
+        {
+            playerName = "Player";
+        }
+        nameInputPanel.SetActive(false);
+    }
+    
     void Update()
     {
         if (isGameActive)
@@ -67,7 +98,6 @@ public class GameManager : MonoBehaviour
     }
     void SpawnBalloon()
     {
-        Debug.Log("Inside spawn balloon");
         int index = Random.Range(0, balloonPrefabs.Length);
         float randomX = Random.Range(screenLeft+minX, screenRight-maxX);
         Vector3 spawnPos = new Vector3(randomX, screenBottom+spawnY, 0);
@@ -95,10 +125,19 @@ public class GameManager : MonoBehaviour
     {
         return score;
     }
-
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    
+    public void EnterMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
     void UpdateScoreDisplay()
     {
-        scoreText.text = "Score: " + score;
+        scoreText.text = $"{playerName}'s Score: {score}";
+        
     }
 
     void UpdateTimerDisplay()
@@ -111,12 +150,9 @@ public class GameManager : MonoBehaviour
     {
         isGameActive = false;
         gameOverPanel.SetActive(true);
-        finalScoreText.text = "Final Score: " + score;
-        // TODO: Check for high score and update if necessary
+        finalScoreText.text = $"{playerName}'s Final Score: {score}";
+
+        HighScoreManager.AddHighScore(playerName, score);
     }
-    
-    public void EnterMenu()
-    {
-        SceneManager.LoadScene("MainMenu");
-    }
+
 }
