@@ -10,10 +10,24 @@ public class Balloon : MonoBehaviour
     private float zigzagTimer = 0f;
     private float zigzagInterval = 1f;
     private int zigzagDirection = 1;
-    //scxvcx
+    
+    private float rightBorder = 0f;
+    private float leftBorder = 0f;
+    private float rightPos;
+    private float leftPos;
 
+    void Start()
+    {
+        rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, Camera.main.nearClipPlane)).x;
+        leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane)).x;
+    }
+    
     void Update()
     {
+        Bounds bounds = transform.GetComponent<Collider2D>().bounds;
+        leftPos = bounds.min.x;
+        rightPos = bounds.max.x;
+        // Debug.Log("left "+leftPos+"right "+rightPos);
         if (isZigzag)
         {
             ZigzagMovement();
@@ -22,11 +36,23 @@ public class Balloon : MonoBehaviour
         {
             transform.Translate(Vector3.up * speed * Time.deltaTime);
         }
-
         if (transform.position.y > Camera.main.orthographicSize + 1f)
         {
             Destroy(gameObject);
         }
+        if (rightPos >= rightBorder)
+        {
+            transform.Translate(Vector3.left * speed * Time.deltaTime);
+            isZigzag = true;
+        }
+        
+        if (leftPos <= leftBorder)
+        {
+            transform.Translate(Vector3.right * speed * Time.deltaTime);
+            isZigzag = true;
+        }
+        
+		
     }
 
     void ZigzagMovement()
