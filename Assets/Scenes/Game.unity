@@ -1513,7 +1513,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: Enter your name here...
+  m_Text: 
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -1593,7 +1593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balloonPrefabs:
-  - {fileID: 1681309859400464868, guid: a1bc03f3890324ecba5dc7c91123dd2f, type: 3}
+  - {fileID: 1681309859400464868, guid: 118ed1405b0064f42af3bdb2036d2ad8, type: 3}
   - {fileID: 1681309859400464868, guid: ed9e83880296242cb99d96e098eda027, type: 3}
   - {fileID: 1681309859400464868, guid: c3a20c080cc9c4891bf90d52df9f0d98, type: 3}
   - {fileID: 1681309859400464868, guid: 05021af9c616ec942846b8c12b18608b, type: 3}
