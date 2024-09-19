@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public GameObject[] balloonPrefabs;
-    public float spawnRate = 1f;
+    public float spawnRate = 0.5f;
     public float minX, maxX;
     public float spawnY;
     public TMPro.TextMeshProUGUI scoreText;
@@ -25,9 +25,10 @@ public class GameManager : MonoBehaviour
     private Camera mainCamera;
     private int score;
 
-    private float timeLeft = 60f;
+    private float timeLeft = 30f;
     private bool isGameActive;
     private string playerName;
+    private Collider2D[] allColliders;
 
     
 
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
     void StartGame()
     {
         score = 0;
-        timeLeft = 60f;
+        timeLeft = 30f;
         isGameActive = true;
         UpdateScoreDisplay();
         UpdateTimerDisplay();
@@ -98,10 +99,12 @@ public class GameManager : MonoBehaviour
     }
     void SpawnBalloon()
     {
-        int index = Random.Range(0, balloonPrefabs.Length);
-        float randomX = Random.Range(screenLeft+minX, screenRight-maxX);
-        Vector3 spawnPos = new Vector3(randomX, screenBottom+spawnY, 0);
-        GameObject balloon = Instantiate(balloonPrefabs[index], spawnPos, Quaternion.identity);
+        if (isGameActive) {
+            int index = Random.Range(0, balloonPrefabs.Length);
+            float randomX = Random.Range(screenLeft+minX, screenRight-maxX);
+            Vector3 spawnPos = new Vector3(randomX, screenBottom+spawnY, 0);
+            GameObject balloon = Instantiate(balloonPrefabs[index], spawnPos, Quaternion.identity);
+        }
     }
     
     IEnumerator SpawnBalloons()
@@ -148,7 +151,11 @@ public class GameManager : MonoBehaviour
 
     void EndGame()
     {
+        allColliders = FindObjectsOfType<Collider2D>();
         isGameActive = false;
+        foreach (Collider2D collider in allColliders) {
+            collider.enabled = false;
+        }
         gameOverPanel.SetActive(true);
         finalScoreText.text = $"{playerName}'s Final Score: {score}";
 
