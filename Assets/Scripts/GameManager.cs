@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public GameObject[] balloonPrefabs;
-    public float spawnRate = 0.5f;
+    public float spawnRate = 0.2f;
     public float minX, maxX;
     public float spawnY;
     public TMPro.TextMeshProUGUI scoreText;
@@ -115,9 +115,7 @@ public class GameManager : MonoBehaviour
             SpawnBalloon();
         }
     }
-
-
-
+    
     public void IncrementScore(int points)
     {
         score += points;

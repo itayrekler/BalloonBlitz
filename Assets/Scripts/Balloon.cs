@@ -27,7 +27,6 @@ public class Balloon : MonoBehaviour
         Bounds bounds = transform.GetComponent<Collider2D>().bounds;
         leftPos = bounds.min.x;
         rightPos = bounds.max.x;
-        // Debug.Log("left "+leftPos+"right "+rightPos);
         if (isZigzag)
         {
             ZigzagMovement();
