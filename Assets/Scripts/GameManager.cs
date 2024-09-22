@@ -49,6 +49,9 @@ public class GameManager : MonoBehaviour
 
     }
     IEnumerator GameSetupCoroutine()
+    /**
+     * We wait for the player to enter his name and only then, start the game.
+     */
     {
         yield return StartCoroutine(WaitForPlayerName());
         StartGame();
@@ -67,6 +70,7 @@ public class GameManager : MonoBehaviour
     
     void OnNameSubmitted()
     {
+        // Once the name was typed, turn off the nameInput panel and move on the start the game
         playerName = nameInputField.text;
         if (string.IsNullOrEmpty(playerName))
         {
@@ -77,6 +81,10 @@ public class GameManager : MonoBehaviour
     
     void Update()
     {
+        /**
+         * We update the timeLeft on the screen.
+         * When the game is over we call EndGame() that wil lbe decribed later on the code.
+         */
         if (isGameActive)
         {
             timeLeft -= Time.deltaTime;
@@ -90,6 +98,10 @@ public class GameManager : MonoBehaviour
 
     void StartGame()
     {
+        /**
+         * Default params setup and reset.
+         * This function is incharge on starting the balloon spawner and initial setup of dynamic text(score and timer).
+         */
         score = 0;
         timeLeft = 30f;
         isGameActive = true;
@@ -99,6 +111,10 @@ public class GameManager : MonoBehaviour
     }
     void SpawnBalloon()
     {
+        /**
+         * This method spawns balloons into the screen.
+         * Balloon type and position are chosen randomly. 
+         */
         if (isGameActive) {
             int index = Random.Range(0, balloonPrefabs.Length);
             float randomX = Random.Range(screenLeft+minX, screenRight-maxX);
@@ -109,6 +125,7 @@ public class GameManager : MonoBehaviour
     
     IEnumerator SpawnBalloons()
     {
+        // Spawn a balloon in every SPAWN_RATE seconds.
         while (isGameActive)
         {
             yield return new WaitForSeconds(spawnRate);
@@ -149,6 +166,11 @@ public class GameManager : MonoBehaviour
 
     void EndGame()
     {
+        /**
+         * When the game is over, we disable the clickability of each existing balloon
+         * to avoid drifts between the visible score and saved score.
+         * At the end of a round, the final score will be displyed to the player and saved to the leaderbord.
+         */
         allColliders = FindObjectsOfType<Collider2D>();
         isGameActive = false;
         foreach (Collider2D collider in allColliders) {
