@@ -32,6 +32,7 @@ public class HighScoreManager : MonoBehaviour
 
     public static void AddHighScore(string playerName, int score)
     {
+        // Add the new score the highScore list of the player in a sorted manner.
         List<HighScore> highScores = GetHighScores();
         highScores.Add(new HighScore(playerName, score));
         highScores.Sort((a, b) => b.score.CompareTo(a.score)); // Sort in descending order
@@ -46,6 +47,7 @@ public class HighScoreManager : MonoBehaviour
 
     private static List<HighScore> GetHighScores()
     {
+        // This function fetches the scores from the player prefs and returns it as a list.
         string scoresString = PlayerPrefs.GetString(HighScoreKey, "");
         if (string.IsNullOrEmpty(scoresString))
         {
@@ -68,6 +70,7 @@ public class HighScoreManager : MonoBehaviour
 
     private static void SaveHighScores(List<HighScore> highScores)
     {
+        // Store the high scores to the player prefs
         string scoresString = string.Join("|", highScores.ConvertAll(score => $"{score.playerName},{score.score}"));
         PlayerPrefs.SetString(HighScoreKey, scoresString);
         PlayerPrefs.Save();
@@ -75,6 +78,7 @@ public class HighScoreManager : MonoBehaviour
 
     private void DisplayHighScores()
     {
+        // This funciton sets the existing player name and score into the Text parts of the leaderboard.
         List<HighScore> highScores = GetHighScores();
         for (int i = 0; i < scores.Length; i++)
         {
