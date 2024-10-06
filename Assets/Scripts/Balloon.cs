@@ -11,6 +11,7 @@ public class Balloon : MonoBehaviour
     public float speed = 1f;
     public bool isZigzag = false;
     public bool isBomb = false;
+    public AudioClip popSound; 
 
     private float zigzagTimer = 0f;
     private float zigzagInterval = 1f;
@@ -20,12 +21,18 @@ public class Balloon : MonoBehaviour
     private float leftBorder = 0f;
     private float rightPos;
     private float leftPos;
+    
+    private AudioSource audioSource;
 
     void Start()
     {
         // At first, we set the screen borders for the object 
         rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, Camera.main.nearClipPlane)).x;
         leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane)).x;
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
     
     void Update()
@@ -96,6 +103,9 @@ public class Balloon : MonoBehaviour
             else
             {
                 gameManager.IncrementScore(pointValue);
+            }
+            if (popSound != null) {
+                AudioSource.PlayClipAtPoint(popSound, transform.position);
             }
         }
         Destroy(gameObject);
