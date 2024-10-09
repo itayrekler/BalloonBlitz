@@ -1612,6 +1612,8 @@ MonoBehaviour:
   nameInputPanel: {fileID: 425121063}
   nameInputField: {fileID: 715294287}
   submitNameButton: {fileID: 547171309}
+  baseGameTime: 30
+  baseSpawnRate: 1
 --- !u!4 &1034768393
 Transform:
   m_ObjectHideFlags: 0

@@ -30,7 +30,11 @@ public class GameManager : MonoBehaviour
     private string playerName;
     private Collider2D[] allColliders;
 
-    
+    private Difficulty currentDifficulty;
+    public float baseGameTime = 30f;
+    public float baseSpawnRate = 1f;
+    private float speedMultiplier = 1f;
+
 
     void Start()
     {
@@ -45,9 +49,34 @@ public class GameManager : MonoBehaviour
         screenRight = mainCamera.ViewportToWorldPoint(new Vector3(1, 0, mainCamera.nearClipPlane)).x;
         screenBottom = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.nearClipPlane)).y;
         
+        currentDifficulty = (Difficulty)PlayerPrefs.GetInt("Difficulty", (int)Difficulty.Medium);
+        AdjustDifficultySettings();
+        
         StartCoroutine(GameSetupCoroutine());
 
     }
+    void AdjustDifficultySettings()
+    {
+        switch (currentDifficulty)
+        {
+            case Difficulty.Easy:
+                spawnRate = baseSpawnRate * 0.7f;
+                timeLeft = baseGameTime * 1.2f; // 20% more time
+                speedMultiplier = 0.7f; // 30% slower
+                break;
+            case Difficulty.Medium:
+                spawnRate = baseSpawnRate * 0.5f;
+                timeLeft = baseGameTime * 1f;
+                speedMultiplier = 1f; // Normal speed
+                break;
+            case Difficulty.Hard:
+                spawnRate = baseSpawnRate * 0.3f;
+                timeLeft = baseGameTime * 0.8f; // 20% less time
+                speedMultiplier = 1.3f; // 30% faster
+                break;
+        }
+    }
+
     IEnumerator GameSetupCoroutine()
     /**
      * We wait for the player to enter his name and only then, start the game.
@@ -103,7 +132,6 @@ public class GameManager : MonoBehaviour
          * This function is incharge on starting the balloon spawner and initial setup of dynamic text(score and timer).
          */
         score = 0;
-        timeLeft = 30f;
         isGameActive = true;
         UpdateScoreDisplay();
         UpdateTimerDisplay();
@@ -120,6 +148,13 @@ public class GameManager : MonoBehaviour
             float randomX = Random.Range(screenLeft+minX, screenRight-maxX);
             Vector3 spawnPos = new Vector3(randomX, screenBottom+spawnY, 0);
             GameObject balloon = Instantiate(balloonPrefabs[index], spawnPos, Quaternion.identity);
+            
+            // Apply difficulty-based speed to the spawned balloon
+            Balloon balloonScript = balloon.GetComponent<Balloon>();
+            if (balloonScript != null)
+            {
+                balloonScript.speed *= speedMultiplier;
+            }
         }
     }
     
@@ -179,7 +214,7 @@ public class GameManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         finalScoreText.text = $"{playerName}'s Final Score: {score}";
 
-        HighScoreManager.AddHighScore(playerName, score);
+        HighScoreManager.AddHighScore(playerName, score, currentDifficulty);
     }
 
 }
