@@ -1,13 +1,21 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
-    public void StartGame()
+    public Button playButton;
+    public Button highScoresButton;
+    public Button quitButton;
+    public void Start()
     {
-        SceneManager.LoadScene("Game");
+        playButton.onClick.AddListener(OpenDifficultySelection);
+        highScoresButton.onClick.AddListener(ShowHighScores);
+        quitButton.onClick.AddListener(QuitGame);
     }
-
+    private void OpenDifficultySelection()
+    {
+        SceneManager.LoadScene("DifficultySelection");
+    }
     public void ShowHighScores()
     {
         SceneManager.LoadScene("HighScore");
