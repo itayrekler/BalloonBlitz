@@ -20,6 +20,11 @@ public class MainMenuManager : MonoBehaviour
     {
         SceneManager.LoadScene("HighScore");
     }
+    
+    public void SettingsScreen()
+    {
+        SceneManager.LoadScene("SettingsPage");
+    }
 
     public void QuitGame()
     {
