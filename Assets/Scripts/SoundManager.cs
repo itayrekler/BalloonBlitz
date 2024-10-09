@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager instance;
     public AudioSource audioSource;
     public AudioClip buttonClickSound;
+    public bool isSoundEnabled;
 
     private void Awake()
     {
@@ -21,11 +23,13 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        isSoundEnabled = true;
         audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayButtonClickSound()
     {
-        audioSource.PlayOneShot(buttonClickSound);
+        if (isSoundEnabled)
+            audioSource.PlayOneShot(buttonClickSound);
     }
 }
