@@ -48,7 +48,6 @@ public class HighScoreManager : MonoBehaviour
     private static List<HighScore> GetHighScores()
     {
         string scoresString = PlayerPrefs.GetString(HighScoreKey, "");
-        Debug.Log($"Retrieved scores string: {scoresString}");
 
         if (string.IsNullOrEmpty(scoresString))
         {
@@ -61,8 +60,6 @@ public class HighScoreManager : MonoBehaviour
         foreach (string scoreString in scoreStrings)
         {
             string[] parts = scoreString.Split(',');
-            Debug.Log($"Parsing score: {scoreString}");
-
             if (parts.Length >= 2 && int.TryParse(parts[1], out int score))
             {
                 Difficulty difficulty = Difficulty.Medium; // Default to Medium for old data
@@ -71,7 +68,6 @@ public class HighScoreManager : MonoBehaviour
                     difficulty = parsedDifficulty;
                 }
                 scores.Add(new HighScore(parts[0], score, difficulty));
-                Debug.Log($"Added high score: {parts[0]}, {score}, {difficulty}");
             }
             else
             {
@@ -87,7 +83,6 @@ public class HighScoreManager : MonoBehaviour
         string scoresString = string.Join("|", highScores.ConvertAll(score => $"{score.playerName},{score.score},{score.difficulty}"));
         PlayerPrefs.SetString(HighScoreKey, scoresString);
         PlayerPrefs.Save();
-        Debug.Log($"Saved high scores: {scoresString}");
     }
 
  private void DisplayHighScores()

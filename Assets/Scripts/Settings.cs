@@ -5,28 +5,51 @@ using UnityEngine.UI;
 public class SettingsManager : MonoBehaviour
 {
     [SerializeField] private Toggle checkbox;
-    private bool toggleState;
+    private const string ToggleStateKey = "ToggleState";
+    private bool isInitializing = false;
 
-    private void Awake()
+    void Start()
     {
-        toggleState = true;
-        Debug.Log($"awake {toggleState}");
+        LoadToggleState();
     }
-    
-    private void Start()
+
+    void OnDisable()
     {
-        Debug.Log($"start {toggleState}");
-        checkbox.isOn = toggleState;
+        SaveToggleState();
+    }
+
+    private void SaveToggleState()
+    {
+        PlayerPrefs.SetInt(ToggleStateKey, checkbox.isOn ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadToggleState()
+    {
+        isInitializing = true;
+        if (PlayerPrefs.HasKey(ToggleStateKey))
+        {
+            checkbox.isOn = PlayerPrefs.GetInt(ToggleStateKey) == 1;
+        }
+        else
+        {
+            PlayerPrefs.SetInt(ToggleStateKey, checkbox.isOn ? 0 : 1);
+        }
+        isInitializing = false;
+    }
+
+    public void OnToggleValueChanged()
+    {
+        if (!isInitializing)
+        {
+            SoundManager soundManager = FindObjectOfType<SoundManager>();
+            soundManager.isSoundEnabled = !soundManager.isSoundEnabled;
+            checkbox.isOn = soundManager.isSoundEnabled;
+            Debug.Log("Toggle value changed: " + checkbox.isOn);
+        }
     }
     public void ReturnToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }
-
-    public void setSound()
-    {
-        SoundManager soundManager = FindObjectOfType<SoundManager>();
-        soundManager.isSoundEnabled = !soundManager.isSoundEnabled;
-    }
-    
 }
