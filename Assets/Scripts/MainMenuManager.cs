@@ -28,6 +28,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void QuitGame()
     {
+        PlayerPrefs.DeleteKey("ToggleState");
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
         #else

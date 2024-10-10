@@ -36,7 +36,7 @@ public class SettingsManager : MonoBehaviour
         }
         else
         {
-            PlayerPrefs.SetInt(ToggleStateKey, checkbox.isOn ? 0 : 1);
+            PlayerPrefs.SetInt(ToggleStateKey, checkbox.isOn ? 1 : 0);
         }
         isInitializing = false;
     }
