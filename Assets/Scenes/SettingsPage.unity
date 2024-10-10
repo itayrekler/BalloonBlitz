@@ -477,7 +477,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 906680799}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: setSound
+        m_MethodName: OnToggleValueChanged
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
