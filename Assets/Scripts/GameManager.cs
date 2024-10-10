@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     }
     void AdjustDifficultySettings()
     {
+        // Apply Difficulty level settings based on the player choice
         switch (currentDifficulty)
         {
             case Difficulty.Easy:
@@ -89,6 +90,7 @@ public class GameManager : MonoBehaviour
     IEnumerator WaitForPlayerName()
     {
         nameInputPanel.SetActive(true);
+        
         submitNameButton.onClick.AddListener(OnNameSubmitted);
 
         // Wait until the name is submitted

@@ -8,6 +8,7 @@ public class ThemeManager : MonoBehaviour
     public GameObject[] regularObjects;
     public GameObject[] zigzagObjects;
     public Theme[] themes;
+    [SerializeField] private Button inactiveSubmitButton;
     
     private int currentThemeIndex = 0;
 
@@ -29,13 +30,19 @@ public class ThemeManager : MonoBehaviour
 
             // Change the background image
             backgroundImage.sprite = selectedTheme.backgroundImage;
+            // Change the button colors (including inactive ones)
             
             Button[] allButtons = FindObjectsOfType<Button>();
             for (int i = 0; i < allButtons.Length; ++i)
             {
                 allButtons[i].image.color = selectedTheme.buttonColor;
             }
-            
+
+            if (inactiveSubmitButton != null)
+            {
+                inactiveSubmitButton.image.color = selectedTheme.buttonColor;
+            }
+            // Change object images(from balloons to pagers)
             if (bombObject != null)
             {
                 SpriteRenderer spriteRenderer = bombObject.GetComponent<SpriteRenderer>();

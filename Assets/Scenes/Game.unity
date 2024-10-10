@@ -1632,6 +1632,7 @@ MonoBehaviour:
   themes:
   - {fileID: 11400000, guid: 013ce5ee2f3f94ba3a266e52eb387f64, type: 2}
   - {fileID: 11400000, guid: 5568f62b93266410189437a8efae9370, type: 2}
+  inactiveSubmitButton: {fileID: 547171309}
 --- !u!4 &736949484
 Transform:
   m_ObjectHideFlags: 0
