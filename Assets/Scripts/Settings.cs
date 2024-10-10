@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/*
+ * This script is used for mainly storing the state of the sound checkbox
+ */
 public class SettingsManager : MonoBehaviour
 {
     [SerializeField] private Toggle checkbox;
@@ -42,10 +45,10 @@ public class SettingsManager : MonoBehaviour
     {
         if (!isInitializing)
         {
+            // Inverts soundManager state when the toggle is clicked
             SoundManager soundManager = FindObjectOfType<SoundManager>();
             soundManager.isSoundEnabled = !soundManager.isSoundEnabled;
             checkbox.isOn = soundManager.isSoundEnabled;
-            Debug.Log("Toggle value changed: " + checkbox.isOn);
         }
     }
     public void ReturnToMainMenu()
